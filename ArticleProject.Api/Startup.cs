@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArticleProject.Api.Configuration;
+using ArticleProject.Core.Attributes;
+using ArticleProject.Core.Middleware;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +29,24 @@ namespace ArticleProject.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //DbContext
+            services.AddMyDbContext(Configuration);
+            //Log
+            services.AddSeriLog(Configuration);
+            //Swagger
+            services.AddMySwagger();
+            //Auth
+            services.AddMyAuth(Configuration);
+            //Service
+            services.AddMyServices();
+            //Validation
+            services.AddMyValidator();
+
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(typeof(ValidateModelAttribute));
+            })
+                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,13 +56,11 @@ namespace ArticleProject.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for Articleion scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseMySwagger();
+
             app.UseMvc();
         }
     }

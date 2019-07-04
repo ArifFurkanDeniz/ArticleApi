@@ -7,10 +7,11 @@ namespace ArticleProject.Business.Interfaces
 {
     public interface IArticleService
     {
-        /// <summary>
-        /// Tekil makale getirir
-        /// </summary>
-        /// <returns></returns>
+      /// <summary>
+      /// Tekil makale döndürür
+      /// </summary>
+      /// <param name="articleId">Makalenin Id'si</param>
+      /// <returns></returns>
         ArticleDto GetById(int articleId);
 
         /// <summary>
@@ -19,12 +20,11 @@ namespace ArticleProject.Business.Interfaces
         /// <returns></returns>
         IEnumerable<ArticleDto> GetArticles();
 
-       
+
         /// <summary>
         /// Yeni bir makale kayıt eder
         /// </summary>
-        /// <param name="Article"></param>
-        /// <returns></returns>
+        /// <param name="Article">Makale dto modeli</param>
         void SaveArticle(ArticleDto Article);
     }
 }

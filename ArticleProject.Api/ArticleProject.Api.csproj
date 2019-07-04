@@ -9,6 +9,17 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArticleProject.Business\ArticleProject.Business.csproj" />
+    <ProjectReference Include="..\ArticleProject.Core\ArticleProject.Core.csproj" />
+    <ProjectReference Include="..\ArticleProject.Domain\ArticleProject.Domain.csproj" />
+    <ProjectReference Include="..\ArticleProject.Entities\ArticleProject.Entities.csproj" />
+    <ProjectReference Include="..\ArticleProject.Repository\ArticleProject.Repository.csproj" />
   </ItemGroup>
 
 </Project>
