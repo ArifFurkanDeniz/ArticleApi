@@ -1,4 +1,5 @@
 ﻿using System;
+using ArticleProject.Domain.Common;
 using ArticleProject.Entities.Models;
 
 namespace ArticleProject.Repository.UnitOfWork
@@ -13,9 +14,21 @@ namespace ArticleProject.Repository.UnitOfWork
             _dbContext = dbContext;
         }
 
-        public int Commit()
+        public ResultModel Commit()
         {
-            return _dbContext.SaveChanges();
+            var resultModel = new ResultModel();
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                resultModel.Status = false;
+                resultModel.Message = ex.Message;
+            }
+
+            return resultModel;
         }
 
         public ArticleDBContext GetDbContext()

@@ -15,6 +15,8 @@ namespace ArticleProject.Repository.Generic
 
         void Update(T entity);
 
-        void Delete(int id, bool forceDelete = true);
+        void Delete(int id);
+
+        void Delete(T entity);
     }
 }

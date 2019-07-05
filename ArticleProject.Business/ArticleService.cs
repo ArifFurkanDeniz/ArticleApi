@@ -8,6 +8,7 @@ using System.Text;
 using ArticleProject.Domain.Dto;
 using ArticleProject.Repository.Extensions;
 using System.Linq;
+using ArticleProject.Domain.Common;
 
 namespace ArticleProject.Business
 {
@@ -29,16 +30,22 @@ namespace ArticleProject.Business
         {
             var ArticleEntity = _ArticleRepository.GetById(ArticleId);
 
-            return new ArticleDto
+            if (ArticleEntity != null)
             {
-                Id = ArticleEntity.Id,
-                Title = ArticleEntity.Title,
-                Text = ArticleEntity.Text,
-                CategoryId = ArticleEntity.CategoryId,
-                CreatedDate = ArticleEntity.CreatedDate,
-                ModifiedDate = ArticleEntity.ModifiedDate
-                
-            };
+                return new ArticleDto
+                {
+                    Id = ArticleEntity.Id,
+                    Title = ArticleEntity.Title,
+                    Text = ArticleEntity.Text,
+                    CategoryId = ArticleEntity.CategoryId,
+                    CreatedDate = ArticleEntity.CreatedDate,
+                    ModifiedDate = ArticleEntity.ModifiedDate
+
+                };
+            }
+            else
+                return null;
+           
         }
 
         public IEnumerable<ArticleDto> GetArticles()
@@ -58,20 +65,64 @@ namespace ArticleProject.Business
 
        
 
-        public void SaveArticle(ArticleDto Article)
+        public ResultModel SaveArticle(ArticleDto Article)
         {
-            var ArticleEntity = new Article
+            if (Article.Id>0)
             {
-                 Title = Article.Title,
-                 Text = Article.Text,
-                 CategoryId = Article.CategoryId
-            };
+                var ArticleEntity = new Article
+                {
+                    Id = Article.Id,
+                    Title = Article.Title,
+                    Text = Article.Text,
+                    CategoryId = Article.CategoryId
+                };
 
-            _ArticleRepository.Create(ArticleEntity);
+                _ArticleRepository.Update(ArticleEntity);       
+            }
+            else
+            {
+                var ArticleEntity = new Article
+                {
+                    Title = Article.Title,
+                    Text = Article.Text,
+                    CategoryId = Article.CategoryId
+                };
 
-            _unitOfWork.Commit();
+                _ArticleRepository.Create(ArticleEntity);
+            }
+           
+
+            return _unitOfWork.Commit();
 
         }
 
+        public ResultModel DeleteArticle(int articleId)
+        {
+            var data = _ArticleRepository.GetById(articleId);
+
+            if (data==null)
+            {
+                return new ResultModel(false, "Makale bulunamadı.");
+            }
+
+            _ArticleRepository.Delete(data);
+
+            return _unitOfWork.Commit();
+        }
+
+        public IEnumerable<ArticleDto> Search(string keyword)
+        {
+            var ArticleList = _ArticleRepository.Find(x => x.Title.Contains(keyword) || x.Text.Contains(keyword));
+
+            return ArticleList.Select(x => new ArticleDto
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Text = x.Text,
+                CategoryId = x.CategoryId,
+                CreatedDate = x.CreatedDate,
+                ModifiedDate = x.ModifiedDate
+            });
+        }
     }
 }

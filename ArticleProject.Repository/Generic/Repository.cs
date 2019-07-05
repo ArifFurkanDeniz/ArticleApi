@@ -60,12 +60,19 @@ namespace ArticleProject.Repository.Generic
             _dbSet.Update(entity);
         }
 
-        public void Delete(int id, bool forceDelete = true)
+        public void Delete(int id)
         {
             var entity = GetById(id);
            
                 _dbSet.Remove(entity);
          
         }
+
+        public void Delete(T entity)
+        {
+            _dbSet.Remove(entity);
+
+        }
+
     }
 }

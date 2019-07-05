@@ -10,6 +10,7 @@ namespace ArticleProject.Api.Configuration
         public static void AddMyValidator(this IServiceCollection services)
         {
             services.AddSingleton<IValidator<LoginApiRequest>, LoginApiRequestValidator>();
+            services.AddSingleton<IValidator<NewArticleApiRequest>, NewArticleApiRequestValidator>();
         }
     }
 }
