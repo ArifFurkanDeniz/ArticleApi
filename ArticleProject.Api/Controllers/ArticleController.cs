@@ -9,6 +9,7 @@ using ArticleProject.Domain.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ArticleProject.Api.Controllers
 {
@@ -26,6 +27,7 @@ namespace ArticleProject.Api.Controllers
         [HttpGet]
         public ActionResult Get()
         {
+            Log.Logger.Information("ArticleController - Get Logged");
             return OkResponse(_articleService.GetArticles());
         }
 
@@ -33,6 +35,7 @@ namespace ArticleProject.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
+            Log.Logger.Information("ArticleController - Get Logged");
             var data = _articleService.GetById(id);
             if (data!=null)
             {
@@ -49,6 +52,7 @@ namespace ArticleProject.Api.Controllers
         [HttpGet("search/{keyword}")]
         public ActionResult Search(string keyword)
         {
+            Log.Logger.Information("ArticleController - Search Logged");
             return OkResponse(_articleService.Search(keyword));
 
         }
@@ -57,7 +61,7 @@ namespace ArticleProject.Api.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] NewArticleApiRequest model)
         {
-
+            Log.Logger.Information("ArticleController - Post Logged");
             var result = _articleService.SaveArticle(new ArticleDto()
             {
                 Title = model.Title,
@@ -82,6 +86,7 @@ namespace ArticleProject.Api.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] NewArticleApiRequest model)
         {
+            Log.Logger.Information("ArticleController - Put Logged");
             var result = _articleService.SaveArticle(new ArticleDto()
             {
                 Id = id,
@@ -106,7 +111,7 @@ namespace ArticleProject.Api.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-
+            Log.Logger.Information("ArticleController - Delete Logged");
             var result = _articleService.DeleteArticle(id);
 
             if (result.Status)

@@ -9,6 +9,7 @@ using ArticleProject.Domain.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ArticleProject.Api.Controllers
 {
@@ -27,6 +28,7 @@ namespace ArticleProject.Api.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] NewCommentApiRequest model)
         {
+            Log.Logger.Information("CommentController - Post Logged");
 
             var result = _commentService.SaveComment(new ArticleCommentDto()
             {
@@ -52,6 +54,8 @@ namespace ArticleProject.Api.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] NewCommentApiRequest model)
         {
+            Log.Logger.Information("CommentController - Put Logged");
+
             var result = _commentService.SaveComment(new ArticleCommentDto()
             {
                 Id = id,
@@ -76,6 +80,7 @@ namespace ArticleProject.Api.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
+            Log.Logger.Information("CommentController - Delete Logged");
 
             var result = _commentService.DeleteComment(id);
 

@@ -7,6 +7,7 @@ using ArticleProject.Domain.Api;
 using ArticleProject.Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ArticleProject.Api.Controllers
 {
@@ -26,7 +27,7 @@ namespace ArticleProject.Api.Controllers
         [HttpPost]
         public async Task<JsonResult> Login([FromBody] LoginApiRequest model)
         {
-
+            Log.Logger.Information("LoginController - Login Logged");
             if (model.Username == "username" && model.Password == "password")
             {
                 var token = _tokenService.GenerateToken(model.Username);
