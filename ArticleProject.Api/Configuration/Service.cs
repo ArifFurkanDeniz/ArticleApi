@@ -22,6 +22,7 @@ namespace ArticleProject.Api.Configuration
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<ICommentService, CommentService>();
 
             services.AddScoped<ITokenService, TokenService>();
         }

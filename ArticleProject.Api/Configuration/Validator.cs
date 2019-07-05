@@ -11,6 +11,7 @@ namespace ArticleProject.Api.Configuration
         {
             services.AddSingleton<IValidator<LoginApiRequest>, LoginApiRequestValidator>();
             services.AddSingleton<IValidator<NewArticleApiRequest>, NewArticleApiRequestValidator>();
+            services.AddSingleton<IValidator<NewCommentApiRequest>, NewCommentApiRequestValidator>();
         }
     }
 }

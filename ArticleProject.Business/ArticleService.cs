@@ -28,7 +28,7 @@ namespace ArticleProject.Business
 
         public ArticleDto GetById(int ArticleId)
         {
-            var ArticleEntity = _ArticleRepository.GetById(ArticleId);
+            var ArticleEntity = _ArticleRepository.GetById(ArticleId, x => x.Include(y => y.ArticleComments));
 
             if (ArticleEntity != null)
             {
@@ -39,7 +39,16 @@ namespace ArticleProject.Business
                     Text = ArticleEntity.Text,
                     CategoryId = ArticleEntity.CategoryId,
                     CreatedDate = ArticleEntity.CreatedDate,
-                    ModifiedDate = ArticleEntity.ModifiedDate
+                    ModifiedDate = ArticleEntity.ModifiedDate,
+                    ArticleComment = ArticleEntity.ArticleComments.Select(x=> new ArticleCommentDto()
+                    {
+                        ArticleId = x.ArticleId,
+                        CreatedDate = x.CreatedDate,
+                        Email = x.Email,
+                        Id = x.Id,
+                        ModifiedDate = x.ModifiedDate,
+                        Text = x.Text
+                    })
 
                 };
             }
@@ -50,7 +59,7 @@ namespace ArticleProject.Business
 
         public IEnumerable<ArticleDto> GetArticles()
         {
-            var ArticleList = _ArticleRepository.Find();
+            var ArticleList = _ArticleRepository.Find(null, x => x.Include(y => y.ArticleComments));
 
             return ArticleList.Select(x => new ArticleDto
             {
@@ -59,7 +68,16 @@ namespace ArticleProject.Business
                 Text = x.Text,
                 CategoryId = x.CategoryId,
                 CreatedDate = x.CreatedDate,
-                ModifiedDate = x.ModifiedDate
+                ModifiedDate = x.ModifiedDate,
+                ArticleComment = x.ArticleComments.Select(y => new ArticleCommentDto()
+                {
+                    ArticleId = y.ArticleId,
+                    CreatedDate = y.CreatedDate,
+                    Email = y.Email,
+                    Id = y.Id,
+                    ModifiedDate = y.ModifiedDate,
+                    Text = y.Text
+                })
             });
         }
 

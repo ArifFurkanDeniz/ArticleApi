@@ -10,5 +10,6 @@ namespace ArticleProject.Domain.Dto
         public string Text { get; set; }
         public int CategoryId { get; set; }
 
+        public IEnumerable<ArticleCommentDto> ArticleComment { get; set; }
     }
 }
