@@ -42,4 +42,6 @@ Cache mekanizması ekleneiblirdi.
 
 - Eklemek istediğiniz bir yorumunuz var mı?
 
+Database script dosyası ArticleProject.Entities projesinin içindedir.
+
 Apiye login olmak için appsettings dosyasında UserName ve Password adlarında kullanıcı ve şifre bilgileri mevcuttur.
