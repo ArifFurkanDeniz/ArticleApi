@@ -7,6 +7,7 @@ using ArticleProject.Domain.Api;
 using ArticleProject.Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace ArticleProject.Api.Controllers
@@ -16,11 +17,13 @@ namespace ArticleProject.Api.Controllers
     public class LoginController : BaseController
     {
         private readonly ITokenService _tokenService;
+        private readonly IConfiguration configuration;
     
 
-        public LoginController( ITokenService tokenService)
+        public LoginController( ITokenService tokenService, IConfiguration iConfig)
         {
             _tokenService = tokenService;
+            configuration = iConfig;
         }
 
         // POST api/login
@@ -28,7 +31,7 @@ namespace ArticleProject.Api.Controllers
         public async Task<JsonResult> Login([FromBody] LoginApiRequest model)
         {
             Log.Logger.Information("LoginController - Login Logged");
-            if (model.Username == "username" && model.Password == "password")
+            if (model.Username == configuration.GetValue<string>("MySettings:UserName") && model.Password == configuration.GetValue<string>("MySettings:Password"))
             {
                 var token = _tokenService.GenerateToken(model.Username);
 
